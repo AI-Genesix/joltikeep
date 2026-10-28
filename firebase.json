@@ -1,1 +1,27 @@
-{"flutter":{"platforms":{"android":{"default":{"projectId":"joltikeep-dev","appId":"1:665063304397:android:f992b448cd5b0c4acf4d84","fileOutput":"android/app/google-services.json"}},"dart":{"lib/firebase_options.dart":{"projectId":"joltikeep-dev","configurations":{"android":"1:665063304397:android:f992b448cd5b0c4acf4d84"}}}}}}
+{
+  "flutter": {
+    "platforms": {
+      "android": {
+        "default": {
+          "projectId": "joltikeep-dev",
+          "appId": "1:665063304397:android:f992b448cd5b0c4acf4d84",
+          "fileOutput": "android/app/google-services.json"
+        }
+      },
+      "dart": {
+        "lib/firebase_options.dart": {
+          "projectId": "joltikeep-dev",
+          "configurations": {
+            "android": "1:665063304397:android:f992b448cd5b0c4acf4d84"
+          }
+        }
+      }
+    }
+  },
+  "firestore": {
+    "database": "(default)",
+    "location": "europe-west9",
+    "rules": "firestore.rules",
+    "indexes": "firestore.indexes.json"
+  }
+}
