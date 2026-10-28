@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "665063304397",
+    "project_id": "joltikeep-dev",
+    "storage_bucket": "joltikeep-dev.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:665063304397:android:f992b448cd5b0c4acf4d84",
+        "android_client_info": {
+          "package_name": "com.genesix.joltikeep"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "665063304397-qh55rcg0unlp75eidstkn8s9a0tl7ca1.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDv4lU4ni00ZzBZ50YBaPg1Kf9mEjE_dlk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "665063304397-qh55rcg0unlp75eidstkn8s9a0tl7ca1.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
