@@ -1,4 +1,10 @@
-enum TournamentType { challenge, cup, regional, international, worlds } // enum des types de tournoi
+enum TournamentType {
+  challenge,
+  cup,
+  regional,
+  international,
+  worlds,
+} // enum des types de tournoi
 
 enum MatchOutcome { win, tie, loss } // enum résultats de match
 
@@ -28,4 +34,12 @@ enum RoundHistory {
   static RoundHistory fromCode(String code) {
     return RoundHistory.values.firstWhere((r) => r.code == code);
   }
+}
+
+class Deck {
+  // Classe des deck
+  const Deck({required this.name, required this.pokemonIds});
+
+  final String name;
+  final List<int> pokemonIds;
 }

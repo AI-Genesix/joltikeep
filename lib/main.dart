@@ -8,7 +8,8 @@ import 'firebase_options.dart'; // Identifiants projet
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized(); // Liaison Flutter / Android
-  await Firebase.initializeApp( // Connexion au projet Firebase
+  await Firebase.initializeApp(
+    // Connexion au projet Firebase
     options: DefaultFirebaseOptions.currentPlatform,
   );
 
@@ -34,19 +35,18 @@ Future<void> main() async {
   }
   */
 
-  runApp(const ProviderScope(child: JoltikeepApp())); 
+  runApp(const ProviderScope(child: JoltikeepApp()));
 }
 
 // Dummy screen
-class JoltikeepApp extends StatelessWidget { // Futur : gestion thème / navigation
+class JoltikeepApp extends StatelessWidget {
+  // Futur : gestion thème / navigation
   const JoltikeepApp({super.key});
 
   @override
   Widget build(BuildContext context) {
     return const MaterialApp(
-      home: Scaffold(
-        body: Center(child: Text('Joltikeep')),
-      )
+      home: Scaffold(body: Center(child: Text('Joltikeep'))),
     );
   }
 }
