@@ -114,4 +114,31 @@ class Tournament {
   final TournamentResult result;
   final int cps;
   final List<Round> rounds;
+
+  MatchRecord get record {
+    var wins = 0, losses = 0, ties = 0;
+
+    for (final round in rounds) {
+      switch (round.outcome) {
+        case MatchOutcome.win:
+          wins++;
+        case MatchOutcome.loss:
+          losses++;
+        case MatchOutcome.tie:
+          ties++;
+      }
+    }
+    return MatchRecord(wins, losses, ties);
+  }
+}
+
+class MatchRecord {
+  const MatchRecord(this.wins, this.losses, this.ties);
+
+  final int wins;
+  final int losses;
+  final int ties;
+
+  @override
+  String toString() => '$wins-$losses-$ties';
 }
