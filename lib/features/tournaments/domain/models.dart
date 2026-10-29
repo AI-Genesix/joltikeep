@@ -54,3 +54,16 @@ class Deck {
     );
   }
 }
+
+class Round {
+  const Round({required this.opponent, required this.history});
+
+  final Deck opponent;
+  final RoundHistory history;
+
+  MatchOutcome get outcome => history.outcome;
+
+  Map<String, dynamic> toMap() {
+    return {'opponent': opponent.toMap(), 'history': history.code};
+  }
+}
