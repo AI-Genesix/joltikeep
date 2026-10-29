@@ -1,3 +1,5 @@
+import 'dart:ffi';
+
 enum TournamentType {
   challenge,
   cup,
@@ -5,6 +7,22 @@ enum TournamentType {
   international,
   worlds,
 } // enum des types de tournoi
+
+enum TournamentResult {
+  winner,
+  finalist,
+  top4,
+  top8,
+  top16,
+  top32,
+  top64,
+  top128,
+  top256,
+  top512,
+  top1024,
+  top2048,
+  outOfTop,
+}
 
 enum MatchOutcome { win, tie, loss } // enum résultats de match
 
@@ -73,4 +91,27 @@ class Round {
       history: RoundHistory.fromCode(map['history'] as String),
     );
   }
+}
+
+class Tournament {
+  const Tournament({
+    required this.id,
+    required this.name,
+    required this.type,
+    required this.date,
+    required this.deck,
+    required this.result,
+    required this.cps,
+
+    this.rounds = const [],
+  });
+
+  final String id;
+  final String name;
+  final TournamentType type;
+  final DateTime date;
+  final Deck deck;
+  final TournamentResult result;
+  final int cps;
+  final List<Round> rounds;
 }
