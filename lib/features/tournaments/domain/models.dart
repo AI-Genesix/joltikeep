@@ -142,6 +142,21 @@ class Tournament {
       'rounds': rounds.map((r) => r.toMap()).toList(),
     };
   }
+
+  factory Tournament.fromMap(String id, Map<String, dynamic> map) {
+    return Tournament(
+      id: id,
+      name: map["name"] as String,
+      type: TournamentType.values.byName(map['type'] as String),
+      result: TournamentResult.values.byName(map['result'] as String),
+      date: (map['date'] as Timestamp).toDate(),
+      cps: map['cps'] as int,
+      deck: Deck.fromMap(Map<String, dynamic>.from(map['deck'] as Map)),
+      rounds: (map['rounds'] as List? ?? [])
+          .map((r) => Round.fromMap(Map<String, dynamic>.from(r as Map)))
+          .toList(),
+    );
+  }
 }
 
 class MatchRecord {
