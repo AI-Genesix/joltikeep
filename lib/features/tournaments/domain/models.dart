@@ -37,9 +37,20 @@ enum RoundHistory {
 }
 
 class Deck {
-  // Classe des deck
+  // Classe des decks
   const Deck({required this.name, required this.pokemonIds});
 
   final String name;
   final List<int> pokemonIds;
+
+  Map<String, dynamic> toMap() {
+    return {'name': name, 'pokemonIds': pokemonIds};
+  }
+
+  factory Deck.fromMap(Map<String, dynamic> map) {
+    return Deck(
+      name: map['name'] as String,
+      pokemonIds: List<int>.from(map['pokemonIds'] as List),
+    );
+  }
 }
