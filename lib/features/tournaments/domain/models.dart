@@ -1,4 +1,4 @@
-import 'dart:ffi';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 enum TournamentType {
   challenge,
@@ -129,6 +129,18 @@ class Tournament {
       }
     }
     return MatchRecord(wins, losses, ties);
+  }
+
+  Map<String, dynamic> toMap() {
+    return {
+      'name': name,
+      'type': type.name,
+      'date': Timestamp.fromDate(date),
+      'deck': deck.toMap(),
+      'result': result.name,
+      'cps': cps,
+      'rounds': rounds.map((r) => r.toMap()).toList(),
+    };
   }
 }
 
