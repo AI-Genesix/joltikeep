@@ -66,4 +66,11 @@ class Round {
   Map<String, dynamic> toMap() {
     return {'opponent': opponent.toMap(), 'history': history.code};
   }
+
+  factory Round.fromMap(Map<String, dynamic> map) {
+    return Round(
+      opponent: Deck.fromMap(Map<String, dynamic>.from(map['opponent'] as Map)),
+      history: RoundHistory.fromCode(map['history'] as String),
+    );
+  }
 }
