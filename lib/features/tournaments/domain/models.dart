@@ -169,3 +169,42 @@ class MatchRecord {
   @override
   String toString() => '$wins-$losses-$ties';
 }
+
+class Season {
+  const Season({
+    required this.id,
+    required this.label,
+    required this.start,
+    required this.end,
+  });
+
+  final String id;
+  final String label;
+  final DateTime start;
+  final DateTime end;
+
+  Map<String, dynamic> toMap() {
+    return {
+      'label': label,
+      'start': Timestamp.fromDate(start),
+      'end': Timestamp.fromDate(end),
+    };
+  }
+
+  factory Season.fromMap(String id, Map<String, dynamic> map) {
+    return Season(
+      id: id,
+      label: map['label'] as String,
+      start: (map['start'] as Timestamp).toDate(),
+      end: (map['end'] as Timestamp).toDate(),
+    );
+  }
+
+  bool isActiveAt(DateTime date) {
+    if (date.isAfter(end) || date.isBefore(start)) {
+      return false;
+    } else {
+      return true;
+    }
+  }
+}
