@@ -7,6 +7,16 @@ Round makeRound(RoundHistory h) => Round(
   history: h,
 );
 
+Tournament makeTournament(int cps) => Tournament(
+  id: "t1",
+  name: "sample",
+  type: TournamentType.regional,
+  date: DateTime.now(),
+  deck: Deck(name: "test", pokemonIds: [001]),
+  result: TournamentResult.top16,
+  cps: cps,
+);
+
 void main() {
   test('Tournament conserve ses valeurs par défaut', () {
     final tournament = Tournament(
@@ -70,5 +80,11 @@ void main() {
         },
       ],
     });
+  });
+  test('Addition CPs', () {
+    final tournamentList = [makeTournament(130), makeTournament(60)];
+    final tournamentEmpty = <Tournament>[];
+    expect(totalCps(tournamentList), 190);
+    expect(totalCps(tournamentEmpty), 0);
   });
 }

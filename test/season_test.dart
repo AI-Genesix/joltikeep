@@ -28,10 +28,13 @@ void main() {
     expect(s.start, DateTime.parse("2026-09-01"));
     expect(s.end, DateTime.parse("2027-05-31"));
   });
-  test('Season date in range', () {
+  test('Season isActiveAt', () {
     expect(season.isActiveAt(DateTime.parse('2026-12-15')), true);
     expect(season.isActiveAt(DateTime.parse("2024-05-31")), false);
     expect(season.isActiveAt(DateTime.parse("2028-05-31")), false);
+    expect(season.isActiveAt(DateTime.parse('2026-09-01')), true);
+    expect(season.isActiveAt(DateTime(2027, 5, 31, 18)), true);
+    expect(season.isActiveAt(DateTime.parse('2027-06-01')), false);
+    expect(season.isActiveAt(DateTime.parse('2026-08-31')), false);
   });
 }
-

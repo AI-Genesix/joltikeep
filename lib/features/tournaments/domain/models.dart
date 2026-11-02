@@ -201,10 +201,14 @@ class Season {
   }
 
   bool isActiveAt(DateTime date) {
-    if (date.isAfter(end) || date.isBefore(start)) {
-      return false;
-    } else {
-      return true;
-    }
+    final endExclusive = DateTime(end.year, end.month, end.day + 1);
+    return !date.isBefore(start) && date.isBefore(endExclusive);
   }
+}
+
+int totalCps(List<Tournament> tournaments) {
+  return tournaments.fold<int>(
+    0,
+    (total, tournament) => total + tournament.cps,
+  );
 }
