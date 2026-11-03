@@ -13,4 +13,14 @@ class TournamentRepository {
 
   CollectionReference<Map<String, dynamic>> _tournaments(String seasonId) =>
       _seasons.doc(seasonId).collection('tournaments');
+
+  Stream<List<Season>> watchSeasons() {
+    return _seasons
+        .orderBy('start', descending: true)
+        .snapshots()
+        .map(
+          (snapshot) =>
+              snapshot.docs.map((s) => Season.fromMap(s.id, s.data())).toList(),
+        );
+  }
 }
