@@ -25,3 +25,17 @@ final tournamentsProvider = StreamProvider.family<List<Tournament>, String>((
   final repository = ref.watch(tournamentRepositoryProvider);
   return repository.watchTournaments(seasonId);
 });
+
+class SelectedSeasonIdNotifier extends Notifier<String?> {
+  @override
+  String? build() => null;
+
+  void select(String seasonId) {
+    state = seasonId;
+  }
+}
+
+final selectedSeasonIdProvider =
+    NotifierProvider<SelectedSeasonIdNotifier, String?>(
+      SelectedSeasonIdNotifier.new,
+    );
