@@ -14,6 +14,7 @@ class TournamentRepository {
   CollectionReference<Map<String, dynamic>> _tournaments(String seasonId) =>
       _seasons.doc(seasonId).collection('tournaments');
 
+  // Récupérer feed des saisons
   Stream<List<Season>> watchSeasons() {
     return _seasons
         .orderBy('start', descending: true)
@@ -24,13 +25,23 @@ class TournamentRepository {
         );
   }
 
+  // Récupérer feed des touraments d'une saison
   Stream<List<Tournament>> watchTournaments(String seasonId) {
     return _tournaments(seasonId)
         .orderBy('date', descending: true)
         .snapshots()
         .map(
-          (snapshot) =>
-              snapshot.docs.map((t) => Tournament.fromMap(t.id, t.data())).toList(),
+          (snapshot) => snapshot.docs
+              .map((t) => Tournament.fromMap(t.id, t.data()))
+              .toList(),
         );
+  }
+
+  // Récupérer infos d'un tournoi
+  Stream<Tournament?> watchTournament(String seasonId, String tournamentId) {
+    return _tournaments(seasonId).doc(tournamentId).snapshots().map((snapshot) {
+      if (!snapshot.exists) return null;
+      return Tournament.fromMap(snapshot.id, snapshot.data()!);
+    });
   }
 }
