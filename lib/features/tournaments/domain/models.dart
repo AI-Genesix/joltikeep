@@ -212,3 +212,17 @@ int totalCps(List<Tournament> tournaments) {
     (total, tournament) => total + tournament.cps,
   );
 }
+
+Season? pickSeason(List<Season> seasons, String? selectedId, DateTime now) {
+  if (seasons.isEmpty) {
+    return null;
+  } else {
+    return seasons.firstWhere(
+      (s) => s.id == selectedId,
+      orElse: () => seasons.firstWhere(
+        (t) => t.isActiveAt(now),
+        orElse: () => seasons.first,
+      ),
+    );
+  }
+}

@@ -37,4 +37,37 @@ void main() {
     expect(season.isActiveAt(DateTime.parse('2027-06-01')), false);
     expect(season.isActiveAt(DateTime.parse('2026-08-31')), false);
   });
+  test('Test pickSeason', () {
+    final seasons = [
+      Season(
+        id: "s4",
+        label: "Season 4",
+        start: DateTime(2026, 9, 1),
+        end: DateTime(2027, 5, 31),
+      ),
+      Season(
+        id: "s3",
+        label: "Season 3",
+        start: DateTime(2025, 9, 1),
+        end: DateTime(2026, 5, 31),
+      ),
+      Season(
+        id: "s2",
+        label: "Season 2",
+        start: DateTime(2024, 9, 1),
+        end: DateTime(2025, 5, 31),
+      ),
+      Season(
+        id: "s1",
+        label: "Season 1",
+        start: DateTime(2023, 9, 1),
+        end: DateTime(2024, 5, 31),
+      ),
+    ];
+    final seasonEmpty = <Season>[];
+    expect(pickSeason(seasons, "s2", DateTime(2026, 11, 3))?.label, "Season 2");
+    expect(pickSeason(seasons, "s5", DateTime(2025, 11, 3))?.label, "Season 3");
+    expect(pickSeason(seasons, "s5", DateTime(2027, 11, 3))?.label, "Season 4");
+    expect(pickSeason(seasonEmpty, "s5", DateTime(2026, 11, 3))?.label, null);
+  });
 }

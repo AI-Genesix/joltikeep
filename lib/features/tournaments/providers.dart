@@ -39,3 +39,11 @@ final selectedSeasonIdProvider =
     NotifierProvider<SelectedSeasonIdNotifier, String?>(
       SelectedSeasonIdNotifier.new,
     );
+
+final displayedSeasonProvider = Provider<AsyncValue<Season?>>((ref) {
+  final seasons = ref.watch(seasonsProvider);
+  final selectedId = ref.watch(selectedSeasonIdProvider);
+  return seasons.whenData(
+    (list) => pickSeason(list, selectedId, DateTime.now()),
+  );
+});
