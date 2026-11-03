@@ -23,4 +23,14 @@ class TournamentRepository {
               snapshot.docs.map((s) => Season.fromMap(s.id, s.data())).toList(),
         );
   }
+
+  Stream<List<Tournament>> watchTournaments(String seasonId) {
+    return _tournaments(seasonId)
+        .orderBy('date', descending: true)
+        .snapshots()
+        .map(
+          (snapshot) =>
+              snapshot.docs.map((t) => Tournament.fromMap(t.id, t.data())).toList(),
+        );
+  }
 }
