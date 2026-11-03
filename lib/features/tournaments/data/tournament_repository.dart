@@ -44,4 +44,19 @@ class TournamentRepository {
       return Tournament.fromMap(snapshot.id, snapshot.data()!);
     });
   }
+
+  Future<void> saveSeason(Season season) {
+    return _seasons.doc(season.id).set(season.toMap());
+  }
+
+  Future<void> saveTournament(String seasonId, Tournament tournament) {
+    return _tournaments(seasonId).doc(tournament.id).set(tournament.toMap());
+  }
+
+  Future<void> deleteTournament(String seasonId, String tournamentId) {
+    return _tournaments(seasonId).doc(tournamentId).delete();
+  }
+
+  String newTournamentId(String seasonId) => _tournaments(seasonId).doc().id;
+  String newSeasonId() => _seasons.doc().id;
 }
