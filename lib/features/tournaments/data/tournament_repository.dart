@@ -59,4 +59,24 @@ class TournamentRepository {
 
   String newTournamentId(String seasonId) => _tournaments(seasonId).doc().id;
   String newSeasonId() => _seasons.doc().id;
+
+  Future<void> _saveRounds(
+    String seasonId,
+    String tournamentId,
+    List<Round> rounds,
+  ) {
+    return _tournaments(seasonId)
+        .doc(tournamentId)
+        .update({'rounds': rounds.map((r) => r.toMap()).toList()});
+  }
+
+  Future<void> addRound(String seasonId, Tournament tournament, Round round) {
+    final newRounds = [...tournament.rounds, round];
+    return _saveRounds(seasonId, tournament.id, newRounds);
+  }
+
+  Future<void> removeRound(String seasonId, Tournament tournament, int index) {
+    final newRounds = List<Round>.of(tournament.rounds)..removeAt(index);
+    return _saveRounds(seasonId, tournament.id, newRounds);
+  }
 }
