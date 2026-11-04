@@ -5,6 +5,8 @@ import 'package:firebase_auth/firebase_auth.dart'; // Authentification
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:joltikeep/app/theme.dart';
 import 'package:joltikeep/features/tournaments/domain/models.dart';
+import 'package:joltikeep/features/tournaments/presentation/styles.dart';
+import 'package:joltikeep/features/tournaments/presentation/widgets/date_tile.dart';
 import 'package:joltikeep/features/tournaments/providers.dart';
 
 import 'firebase_options.dart'; // Identifiants projet
@@ -65,20 +67,11 @@ class HomeScreen extends ConsumerWidget {
       loading: () => const Center(child: CircularProgressIndicator()),
     );
     return Scaffold(
-      body: Center(child: render),
-      floatingActionButton: FloatingActionButton(
-        child: const Icon(Icons.add),
-        onPressed: () {
-          final repo = ref.read(tournamentRepositoryProvider);
-          repo.saveSeason(
-            Season(
-              id: repo.newSeasonId(),
-              label: 'Saison 2027',
-              start: DateTime(2026, 9, 1),
-              end: DateTime(2027, 8, 31),
-            ),
-          );
-        },
+      body: Center(
+        child: DateTile(
+          date: DateTime(2026, 10, 4),
+          color: TournamentType.international.color,
+        ),
       ),
     );
   }
