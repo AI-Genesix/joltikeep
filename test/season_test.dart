@@ -68,6 +68,7 @@ void main() {
     expect(pickSeason(seasons, "s2", DateTime(2026, 11, 3))?.label, "Season 2");
     expect(pickSeason(seasons, "s5", DateTime(2025, 11, 3))?.label, "Season 3");
     expect(pickSeason(seasons, "s5", DateTime(2027, 11, 3))?.label, "Season 4");
-    expect(pickSeason(seasonEmpty, "s5", DateTime(2026, 11, 3))?.label, null);
+    expect(pickSeason(seasons, null, DateTime(2027, 11, 3))?.label, "Season 4");
+    expect(pickSeason(seasonEmpty, "s5", DateTime(2026, 11, 3)), isNull);
   });
 }
