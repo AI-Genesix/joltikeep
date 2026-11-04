@@ -3,6 +3,7 @@ import 'package:flutter/material.dart'; // Widgets de base Flutter
 import 'package:flutter_riverpod/flutter_riverpod.dart'; // Gestion d'état
 import 'package:firebase_auth/firebase_auth.dart'; // Authentification
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:joltikeep/app/theme.dart';
 import 'package:joltikeep/features/tournaments/domain/models.dart';
 import 'package:joltikeep/features/tournaments/providers.dart';
 
@@ -47,7 +48,7 @@ class JoltikeepApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const MaterialApp(home: HomeScreen());
+    return MaterialApp(theme: buildTheme(), home: HomeScreen());
   }
 }
 
