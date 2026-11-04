@@ -7,6 +7,7 @@ import 'package:joltikeep/app/theme.dart';
 import 'package:joltikeep/features/tournaments/domain/models.dart';
 import 'package:joltikeep/features/tournaments/presentation/styles.dart';
 import 'package:joltikeep/features/tournaments/presentation/widgets/date_tile.dart';
+import 'package:joltikeep/features/tournaments/presentation/widgets/tournament_card.dart';
 import 'package:joltikeep/features/tournaments/providers.dart';
 
 import 'firebase_options.dart'; // Identifiants projet
@@ -67,11 +68,21 @@ class HomeScreen extends ConsumerWidget {
       loading: () => const Center(child: CircularProgressIndicator()),
     );
     return Scaffold(
-      body: Center(
-        child: DateTile(
-          date: DateTime(2026, 10, 4),
-          color: TournamentType.international.color,
-        ),
+      body: SafeArea(
+        child: ListView(
+          padding: const EdgeInsets.all(12),
+          children: [TournamentCard(
+          tournament: Tournament(
+            id: 't1',
+            name: 'Régional Nice',
+            type: TournamentType.regional,
+            date: DateTime(2026, 10, 18),
+            deck: const Deck(name: "Hide 'n Sneak", pokemonIds: [781, 354]),
+            result: TournamentResult.finalist,
+            cps: 325,
+          ),
+        ),],
+        )
       ),
     );
   }
