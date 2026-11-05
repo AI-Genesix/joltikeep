@@ -7,6 +7,7 @@ import 'package:joltikeep/app/theme.dart';
 import 'package:joltikeep/features/tournaments/domain/models.dart';
 import 'package:joltikeep/features/tournaments/presentation/styles.dart';
 import 'package:joltikeep/features/tournaments/presentation/widgets/date_tile.dart';
+import 'package:joltikeep/features/tournaments/presentation/widgets/deck_icons.dart';
 import 'package:joltikeep/features/tournaments/presentation/widgets/tournament_card.dart';
 import 'package:joltikeep/features/tournaments/providers.dart';
 
@@ -71,18 +72,23 @@ class HomeScreen extends ConsumerWidget {
       body: SafeArea(
         child: ListView(
           padding: const EdgeInsets.all(12),
-          children: [TournamentCard(
-          tournament: Tournament(
-            id: 't1',
-            name: 'Régional Nice',
-            type: TournamentType.regional,
-            date: DateTime(2026, 10, 18),
-            deck: const Deck(name: "Hide 'n Sneak", pokemonIds: [781, 354]),
-            result: TournamentResult.finalist,
-            cps: 325,
-          ),
-        ),],
-        )
+          children: [
+            TournamentCard(
+              tournament: Tournament(
+                id: 't1',
+                name: 'Régional Nice',
+                type: TournamentType.regional,
+                date: DateTime(2026, 10, 18),
+                deck: const Deck(name: "Hide 'n Sneak", pokemonIds: [781, 354]),
+                result: TournamentResult.finalist,
+                cps: 325,
+              ),
+            ),
+            const DeckIcons(pokemonIds: [887, 477]),
+            const SizedBox(height: 16),
+            const DeckIcons(pokemonIds: [781]),
+          ],
+        ),
       ),
     );
   }

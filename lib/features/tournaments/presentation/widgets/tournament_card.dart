@@ -70,7 +70,11 @@ class TournamentCard extends StatelessWidget {
               ),
               Text(
                 'CPs',
-                style: TextStyle(fontSize: 11, color: AppColors.muted, letterSpacing: 0.6),
+                style: TextStyle(
+                  fontSize: 11,
+                  color: AppColors.muted,
+                  letterSpacing: 0.6,
+                ),
               ),
             ],
           ),
