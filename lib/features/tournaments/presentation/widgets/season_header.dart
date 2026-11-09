@@ -10,6 +10,7 @@ class SeasonHeader extends StatelessWidget {
     required this.totalCps,
     required this.tournamentCount,
     required this.record,
+    required this.onSeasonTap,
   });
 
   final String label;
@@ -17,6 +18,7 @@ class SeasonHeader extends StatelessWidget {
   final int totalCps;
   final int tournamentCount;
   final MatchRecord record;
+  final VoidCallback onSeasonTap;
 
   @override
   Widget build(BuildContext context) {
@@ -36,22 +38,27 @@ class SeasonHeader extends StatelessWidget {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Container(
-                padding: EdgeInsets.symmetric(horizontal: 14, vertical: 10),
-                decoration: BoxDecoration(
-                  color: AppColors.background,
-                  border: Border.all(color: AppColors.line),
-                  borderRadius: BorderRadius.circular(22),
+              Material(
+                color: AppColors.background,
+                shape: const StadiumBorder(
+                  side: BorderSide(color: AppColors.line),
                 ),
-                child: Row(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    Text(
-                      label,
-                      style: const TextStyle(fontWeight: FontWeight.w700),
+                child: InkWell(
+                  customBorder: const StadiumBorder(),
+                  onTap: onSeasonTap,
+                  child: Padding(
+                    padding: EdgeInsets.symmetric(horizontal: 14, vertical: 10),
+                    child: Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Text(
+                          label,
+                          style: const TextStyle(fontWeight: FontWeight.w700),
+                        ),
+                        const Icon(Icons.expand_more, size: 18),
+                      ],
                     ),
-                    const Icon(Icons.expand_more, size: 18),
-                  ],
+                  ),
                 ),
               ),
               Row(
@@ -119,11 +126,19 @@ class SeasonHeader extends StatelessWidget {
           SizedBox(height: 12),
           Container(
             padding: const EdgeInsets.all(8),
-            decoration: BoxDecoration(color: AppColors.line, borderRadius: BorderRadius.circular(8)),
+            decoration: BoxDecoration(
+              color: AppColors.line,
+              borderRadius: BorderRadius.circular(8),
+            ),
             child: Text(
-            "Statistiques non officielles, basées seulement sur les informations saisies par l'utilisateur. Des erreurs peuvent donc apparaître.",
-            style: TextStyle(fontSize: 10, color: AppColors.muted, fontStyle: FontStyle.italic)
-          ),)
+              "Statistiques non officielles, basées seulement sur les informations saisies par l'utilisateur. Des erreurs peuvent donc apparaître.",
+              style: TextStyle(
+                fontSize: 10,
+                color: AppColors.muted,
+                fontStyle: FontStyle.italic,
+              ),
+            ),
+          ),
         ],
       ),
     );
@@ -148,5 +163,4 @@ class _Stat extends StatelessWidget {
       ],
     );
   }
-  // Column centrée : value en gras (22), label en gris (12)
 }

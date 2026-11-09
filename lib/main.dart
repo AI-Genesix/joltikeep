@@ -5,6 +5,7 @@ import 'package:firebase_auth/firebase_auth.dart'; // Authentification
 import 'package:joltikeep/app/theme.dart';
 import 'package:joltikeep/features/tournaments/domain/models.dart';
 import 'package:joltikeep/features/tournaments/presentation/widgets/season_header.dart';
+import 'package:joltikeep/features/tournaments/presentation/widgets/season_picker_sheet.dart';
 import 'package:joltikeep/features/tournaments/presentation/widgets/tournament_card.dart';
 import 'package:joltikeep/features/tournaments/providers.dart';
 
@@ -125,6 +126,10 @@ class _SeasonView extends ConsumerWidget {
                   totalCps: totalCps(list),
                   tournamentCount: list.length,
                   record: seasonRecord(list),
+                  onSeasonTap: () => showModalBottomSheet(
+                    context: context,
+                    builder: (context) => const SeasonPickerSheet(),
+                  ),
                 ),
                 const SizedBox(height: 24),
                 for (final t in list) ...[
