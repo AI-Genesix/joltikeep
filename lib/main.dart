@@ -2,12 +2,9 @@ import 'package:firebase_core/firebase_core.dart'; // Point d'entrée Firebase
 import 'package:flutter/material.dart'; // Widgets de base Flutter
 import 'package:flutter_riverpod/flutter_riverpod.dart'; // Gestion d'état
 import 'package:firebase_auth/firebase_auth.dart'; // Authentification
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:joltikeep/app/theme.dart';
 import 'package:joltikeep/features/tournaments/domain/models.dart';
-import 'package:joltikeep/features/tournaments/presentation/styles.dart';
-import 'package:joltikeep/features/tournaments/presentation/widgets/date_tile.dart';
-import 'package:joltikeep/features/tournaments/presentation/widgets/deck_icons.dart';
+import 'package:joltikeep/features/tournaments/presentation/widgets/season_header.dart';
 import 'package:joltikeep/features/tournaments/presentation/widgets/tournament_card.dart';
 import 'package:joltikeep/features/tournaments/providers.dart';
 
@@ -25,7 +22,6 @@ Future<void> main() async {
     await FirebaseAuth.instance.signInAnonymously();
   }
   // debugPrint('uid = ${FirebaseAuth.instance.currentUser?.uid}');
-  final uid = FirebaseAuth.instance.currentUser!.uid;
 
   // Test écriture et lecture
   /*
@@ -63,33 +59,84 @@ class HomeScreen extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final season = ref.watch(displayedSeasonProvider);
-    final render = season.when(
-      data: (s) => s == null ? const Text('Aucune saison') : Text(s.label),
-      error: (e, st) => Text('Erreur : $e'),
-      loading: () => const Center(child: CircularProgressIndicator()),
-    );
     return Scaffold(
-      body: SafeArea(
-        child: ListView(
-          padding: const EdgeInsets.all(12),
-          children: [
-            TournamentCard(
-              tournament: Tournament(
-                id: 't1',
-                name: 'Régional Nice',
-                type: TournamentType.regional,
-                date: DateTime(2026, 10, 18),
-                deck: const Deck(name: "Hide 'n Sneak", pokemonIds: [781, 354]),
-                result: TournamentResult.finalist,
-                cps: 325,
-              ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          final repo = ref.read(tournamentRepositoryProvider);
+          repo.saveSeason(
+            Season(
+              id: repo.newSeasonId(),
+              label: 'Saison 2027',
+              start: DateTime(2026, 9, 1),
+              end: DateTime(2027, 8, 31),
             ),
-            const DeckIcons(pokemonIds: [887, 477]),
-            const SizedBox(height: 16),
-            const DeckIcons(pokemonIds: [781]),
-          ],
+          );
+        },
+      ),
+      body: SafeArea(
+        child: season.when(
+          data: (s) => s == null
+              ? const Center(child: Text('Aucune saison'))
+              : _SeasonView(season: s),
+          error: (e, st) => Center(child: Text('Erreur : $e')),
+          loading: () => const Center(child: CircularProgressIndicator()),
         ),
       ),
+    );
+  }
+}
+
+class _SeasonView extends ConsumerWidget {
+  const _SeasonView({required this.season});
+
+  final Season season;
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final tournaments = ref.watch(tournamentsProvider(season.id));
+    return Column(
+      children: [
+        TextButton(
+          onPressed: () {
+            final repo = ref.read(tournamentRepositoryProvider);
+            repo.saveTournament(
+              season.id,
+              Tournament(
+                id: repo.newTournamentId(season.id),
+                name: "Tournoi test",
+                type: TournamentType.challenge,
+                date: DateTime.now(),
+                deck: const Deck(name: "Hide 'n Sneak", pokemonIds: [781, 384]),
+                result: TournamentResult.top8,
+                cps: 280,
+              ),
+            );
+          },
+          child: const Text('Ajouter un tournoi test'),
+        ),
+        Expanded(
+          child: tournaments.when(
+            data: (list) => ListView(
+              padding: const EdgeInsets.all(20),
+              children: [
+                SeasonHeader(
+                  label: season.label,
+                  isCurrent: season.isActiveAt(DateTime.now()),
+                  totalCps: totalCps(list),
+                  tournamentCount: list.length,
+                ),
+                const SizedBox(height: 24),
+                for (final t in list) ...[
+                  TournamentCard(tournament: t),
+                  const SizedBox(height: 12),
+                ],
+              ],
+            ),
+            loading: () => const Center(child: CircularProgressIndicator()),
+            error: (e, st) => Center(child: Text('Erreur : $e')),
+          ),
+        ),
+      ],
     );
   }
 }
