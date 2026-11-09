@@ -168,6 +168,12 @@ class MatchRecord {
 
   @override
   String toString() => '$wins-$losses-$ties';
+
+  int get total => wins + losses + ties;
+
+  double? get winRate {
+    return total > 0 ? (wins + ties * 0.5) / total : null;
+  }
 }
 
 class Season {
@@ -211,6 +217,23 @@ int totalCps(List<Tournament> tournaments) {
     0,
     (total, tournament) => total + tournament.cps,
   );
+}
+
+MatchRecord seasonRecord(List<Tournament> tournaments) {
+  final wins = tournaments.fold<int>(
+    0,
+    (total, tournament) => total + tournament.record.wins,
+  );
+  final ties = tournaments.fold<int>(
+    0,
+    (total, tournament) => total + tournament.record.ties,
+  );
+  final losses = tournaments.fold<int>(
+    0,
+    (total, tournament) => total + tournament.record.losses,
+  );
+
+  return MatchRecord(wins, losses, ties);
 }
 
 Season? pickSeason(List<Season> seasons, String? selectedId, DateTime now) {

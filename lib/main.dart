@@ -124,6 +124,7 @@ class _SeasonView extends ConsumerWidget {
                   isCurrent: season.isActiveAt(DateTime.now()),
                   totalCps: totalCps(list),
                   tournamentCount: list.length,
+                  record: seasonRecord(list),
                 ),
                 const SizedBox(height: 24),
                 for (final t in list) ...[
