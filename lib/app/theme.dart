@@ -31,5 +31,12 @@ ThemeData buildTheme() {
       primary: AppColors.accent,
       onSurface: AppColors.text,
     ),
+    bottomSheetTheme: const BottomSheetThemeData(
+      backgroundColor: AppColors.surface,
+      showDragHandle: true,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
+      ),
+    ),
   );
 }

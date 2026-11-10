@@ -12,43 +12,56 @@ class SeasonPickerSheet extends ConsumerWidget {
     final displayedId = ref
         .watch(displayedSeasonProvider)
         .maybeWhen(data: (s) => s?.id, orElse: () => null);
-    return Container(
-      padding: const EdgeInsets.all(16),
-      child: seasons.when(
-        data: (list) => Column(
-          children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [Text("Choisir une saison :")],
-            ),
-            for (final s in list) ...[
-              ListTile(
-                title: displayedId == s.id
-                    ? Row(
-                        children: [
-                          Text(s.label),
-                          SizedBox(width: 6),
-                          Container(
-                            decoration: BoxDecoration(
-                              shape: BoxShape.circle,
-                              color: AppColors.win,
-                            ),
-                            width: 8,
-                            height: 8,
+    return SafeArea(
+      child: Padding(
+        padding: const EdgeInsets.fromLTRB(16, 0, 16, 16),
+        child: seasons.when(
+          data: (list) => Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                'Choisir une saison',
+                style: Theme.of(context).textTheme.titleMedium,
+              ),
+              const SizedBox(height: 8),
+              Flexible(
+                child: ListView(
+                  shrinkWrap: true,
+                  children: [
+                    for (final s in list)
+                      ListTile(
+                        contentPadding: EdgeInsets.zero,
+                        title: Text(s.label),
+                        subtitle: Text(
+                          style: TextStyle(
+                            color: AppColors.muted,
+                            fontSize: 12,
                           ),
-                        ],
-                      )
-                    : Text(s.label),
-                onTap: () {
-                  ref.read(selectedSeasonIdProvider.notifier).select(s.id);
-                  Navigator.pop(context);
-                },
+                          '${s.start.day.toString().padLeft(2, '0')}/${s.start.month.toString().padLeft(2, '0')}/${s.start.year} – ${s.end.day.toString().padLeft(2, '0')}/${s.end.month.toString().padLeft(2, '0')}/${s.end.year}',
+                        ),
+                        selected: s.id == displayedId,
+                        trailing: s.id == displayedId
+                            ? const Icon(Icons.check)
+                            : null,
+                        onTap: () {
+                          ref
+                              .read(selectedSeasonIdProvider.notifier)
+                              .select(s.id);
+                          Navigator.pop(context);
+                        },
+                      ),
+                  ],
+                ),
               ),
             ],
-          ],
+          ),
+          loading: () => const SizedBox(
+            height: 120,
+            child: Center(child: CircularProgressIndicator()),
+          ),
+          error: (e, st) => Center(child: Text('Erreur : $e')),
         ),
-        loading: () => CircularProgressIndicator(),
-        error: (e, st) => Center(child: Text('Erreur : $e')),
       ),
     );
   }
