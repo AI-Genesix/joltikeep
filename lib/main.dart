@@ -7,6 +7,7 @@ import 'package:joltikeep/features/tournaments/domain/models.dart';
 import 'package:joltikeep/features/tournaments/presentation/widgets/season_header.dart';
 import 'package:joltikeep/features/tournaments/presentation/widgets/season_picker_sheet.dart';
 import 'package:joltikeep/features/tournaments/presentation/widgets/tournament_card.dart';
+import 'package:joltikeep/features/tournaments/presentation/widgets/tournament_deletion.dart';
 import 'package:joltikeep/features/tournaments/providers.dart';
 
 import 'firebase_options.dart'; // Identifiants projet
@@ -133,7 +134,16 @@ class _SeasonView extends ConsumerWidget {
                 ),
                 const SizedBox(height: 24),
                 for (final t in list) ...[
-                  TournamentCard(tournament: t),
+                  TournamentCard(
+                    tournament: t,
+                    onLongPress: () async {
+                      final ok = await confirmDeleteTournament(context, t);
+                      if (!ok || !context.mounted) return;
+                      ref
+                          .read(tournamentRepositoryProvider)
+                          .deleteTournament(season.id, t.id);
+                    },
+                  ),
                   const SizedBox(height: 12),
                 ],
               ],
