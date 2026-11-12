@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:joltikeep/app/theme.dart';
+import 'package:joltikeep/features/tournaments/presentation/formatters.dart';
 import 'package:joltikeep/features/tournaments/presentation/screens/season_form.dart';
 import 'package:joltikeep/features/tournaments/providers.dart';
 
@@ -39,7 +40,7 @@ class SeasonPickerSheet extends ConsumerWidget {
                             color: AppColors.muted,
                             fontSize: 12,
                           ),
-                          '${s.start.day.toString().padLeft(2, '0')}/${s.start.month.toString().padLeft(2, '0')}/${s.start.year} – ${s.end.day.toString().padLeft(2, '0')}/${s.end.month.toString().padLeft(2, '0')}/${s.end.year}',
+                          '${formatDate(s.start)} - ${formatDate(s.end)}',
                         ),
                         selected: s.id == displayedId,
                         trailing: s.id == displayedId

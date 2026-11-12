@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:joltikeep/features/tournaments/domain/models.dart';
+import 'package:joltikeep/features/tournaments/presentation/formatters.dart';
 
 class SeasonFormScreen extends ConsumerStatefulWidget {
   const SeasonFormScreen({super.key});
@@ -11,7 +12,6 @@ class SeasonFormScreen extends ConsumerStatefulWidget {
 
 class _SeasonFormScreenState extends ConsumerState<SeasonFormScreen> {
   final _nameController = TextEditingController();
-
   late DateTime _start;
   late DateTime _end;
 
@@ -29,6 +29,7 @@ class _SeasonFormScreenState extends ConsumerState<SeasonFormScreen> {
     super.initState();
     _start = defaultSeasonStart(DateTime.now());
     _end = DateTime(_start.year + 1, 8, 31);
+    _nameController.text = "Saison ${_end.year}";
   }
 
   @override
@@ -49,12 +50,11 @@ class _SeasonFormScreenState extends ConsumerState<SeasonFormScreen> {
               controller: _nameController,
               decoration: const InputDecoration(labelText: 'Nom de la saison'),
             ),
+            const SizedBox(height: 12),
             ListTile(
               contentPadding: EdgeInsets.zero,
               title: const Text('Début'),
-              subtitle: Text(
-                '${_start.day.toString().padLeft(2, '0')}/${_start.month.toString().padLeft(2, '0')}/${_start.year}',
-              ),
+              subtitle: Text(formatDate(_start)),
               trailing: const Icon(Icons.calendar_today),
               onTap: () async {
                 final picked = await _pickDate(_start);
@@ -67,9 +67,7 @@ class _SeasonFormScreenState extends ConsumerState<SeasonFormScreen> {
             ListTile(
               contentPadding: EdgeInsets.zero,
               title: const Text('Fin'),
-              subtitle: Text(
-                "${_end.day.toString().padLeft(2, '0')}/${_end.month.toString().padLeft(2, '0')}/${_end.year}",
-              ),
+              subtitle: Text(formatDate(_end)),
               trailing: const Icon(Icons.calendar_today),
               onTap: () async {
                 final picked = await _pickDate(_end);
