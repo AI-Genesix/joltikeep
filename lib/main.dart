@@ -62,19 +62,6 @@ class HomeScreen extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final season = ref.watch(displayedSeasonProvider);
     return Scaffold(
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          final repo = ref.read(tournamentRepositoryProvider);
-          repo.saveSeason(
-            Season(
-              id: repo.newSeasonId(),
-              label: 'Saison 2027',
-              start: DateTime(2026, 9, 1),
-              end: DateTime(2027, 8, 31),
-            ),
-          );
-        },
-      ),
       body: SafeArea(
         child: season.when(
           data: (s) => s == null

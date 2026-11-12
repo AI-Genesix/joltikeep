@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:joltikeep/app/theme.dart';
 import 'package:joltikeep/features/tournaments/domain/models.dart';
 import 'package:joltikeep/features/tournaments/presentation/formatters.dart';
+import 'package:joltikeep/features/tournaments/providers.dart';
 
 class SeasonFormScreen extends ConsumerStatefulWidget {
   const SeasonFormScreen({super.key});
@@ -14,6 +15,7 @@ class SeasonFormScreen extends ConsumerStatefulWidget {
 class _SeasonFormScreenState extends ConsumerState<SeasonFormScreen> {
   final _formKey = GlobalKey<FormState>();
   final _nameController = TextEditingController();
+  bool _saving = false;
   late DateTime _start;
   late DateTime _end;
 
@@ -108,6 +110,19 @@ class _SeasonFormScreenState extends ConsumerState<SeasonFormScreen> {
   }
 
   void _submit() {
+    if (_saving) return;
+    _saving = true;
     if (!_formKey.currentState!.validate()) return;
+    final repository = ref.read(tournamentRepositoryProvider);
+    final id = repository.newSeasonId();
+    final season = Season(
+      id: id,
+      label: _nameController.text.trim(),
+      start: _start,
+      end: _end,
+    );
+    repository.saveSeason(season);
+    ref.read(selectedSeasonIdProvider.notifier).select(id);
+    Navigator.pop(context);
   }
 }
