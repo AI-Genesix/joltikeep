@@ -12,6 +12,7 @@ class SeasonFormScreen extends ConsumerStatefulWidget {
 }
 
 class _SeasonFormScreenState extends ConsumerState<SeasonFormScreen> {
+  final _formKey = GlobalKey<FormState>();
   final _nameController = TextEditingController();
   late DateTime _start;
   late DateTime _end;
@@ -41,61 +42,72 @@ class _SeasonFormScreenState extends ConsumerState<SeasonFormScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final datesError = seasonDatesErrror(_start, _end);
+    final datesError = seasonDatesError(_start, _end);
 
     return Scaffold(
       appBar: AppBar(title: const Text('Nouvelle saison')),
       body: Padding(
         padding: const EdgeInsets.all(16),
-        child: Column(
-          children: [
-            TextField(
-              controller: _nameController,
-              decoration: const InputDecoration(labelText: 'Nom de la saison'),
-            ),
-            const SizedBox(height: 12),
-            ListTile(
-              contentPadding: EdgeInsets.zero,
-              title: const Text('Début'),
-              subtitle: Text(formatDate(_start)),
-              trailing: const Icon(Icons.calendar_today),
-              onTap: () async {
-                final picked = await _pickDate(_start);
-                if (picked == null || !mounted) return;
-                setState(() {
-                  _start = picked;
-                });
-              },
-            ),
-            ListTile(
-              contentPadding: EdgeInsets.zero,
-              title: const Text('Fin'),
-              subtitle: Text(formatDate(_end)),
-              trailing: const Icon(Icons.calendar_today),
-              onTap: () async {
-                final picked = await _pickDate(_end);
-                if (picked == null || !mounted) return;
-                setState(() {
-                  _end = picked;
-                });
-              },
-            ),
-            datesError != null
-                ? Text(
-                    datesError,
-                    style: TextStyle(fontSize: 12, color: AppColors.loss),
-                  )
-                : SizedBox(),
-            const SizedBox(height: 24),
-            FilledButton(
-              onPressed: datesError == null ? _submit : null,
-              child: const Text('Créer'),
-            ),
-          ],
+        child: Form(
+          key: _formKey,
+          autovalidateMode: AutovalidateMode.onUserInteraction,
+          child: ListView(
+            children: [
+              TextFormField(
+                validator: (value) => (value ?? '').trim().isEmpty
+                    ? "Le nom ne peut pas être vide"
+                    : null,
+                controller: _nameController,
+                decoration: const InputDecoration(
+                  labelText: 'Nom de la saison',
+                ),
+              ),
+              const SizedBox(height: 12),
+              ListTile(
+                contentPadding: EdgeInsets.zero,
+                title: const Text('Début'),
+                subtitle: Text(formatDate(_start)),
+                trailing: const Icon(Icons.calendar_today),
+                onTap: () async {
+                  final picked = await _pickDate(_start);
+                  if (picked == null || !mounted) return;
+                  setState(() {
+                    _start = picked;
+                  });
+                },
+              ),
+              ListTile(
+                contentPadding: EdgeInsets.zero,
+                title: const Text('Fin'),
+                subtitle: Text(formatDate(_end)),
+                trailing: const Icon(Icons.calendar_today),
+                onTap: () async {
+                  final picked = await _pickDate(_end);
+                  if (picked == null || !mounted) return;
+                  setState(() {
+                    _end = picked;
+                  });
+                },
+              ),
+              if (datesError != null)
+                Text(
+                  datesError,
+                  style: TextStyle(fontSize: 12, color: AppColors.loss),
+                ),
+
+              const SizedBox(height: 24),
+              FilledButton(
+                onPressed: datesError == null ? _submit : null,
+                child: const Text('Créer'),
+              ),
+            ],
+          ),
         ),
       ),
     );
   }
 
-  void _submit() {}
+  void _submit() {
+    if (!_formKey.currentState!.validate()) return;
+  }
 }
