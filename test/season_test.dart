@@ -71,4 +71,8 @@ void main() {
     expect(pickSeason(seasons, null, DateTime(2027, 11, 3))?.label, "Season 4");
     expect(pickSeason(seasonEmpty, "s5", DateTime(2026, 11, 3)), isNull);
   });
+  test('Dates par défaut', () {
+    expect(defaultSeasonStart(DateTime(2026, 8, 31)), DateTime(2025, 9, 1));
+    expect(defaultSeasonStart(DateTime(2026, 9, 1)), DateTime(2026, 9, 1));
+  });
 }

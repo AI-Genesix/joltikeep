@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:joltikeep/app/theme.dart';
+import 'package:joltikeep/features/tournaments/presentation/screens/season_form.dart';
 import 'package:joltikeep/features/tournaments/providers.dart';
 
 class SeasonPickerSheet extends ConsumerWidget {
@@ -51,6 +52,20 @@ class SeasonPickerSheet extends ConsumerWidget {
                           Navigator.pop(context);
                         },
                       ),
+                    ListTile(
+                      contentPadding: EdgeInsets.zero,
+                      leading: const Icon(Icons.add),
+                      title: const Text('Nouvelle saison'),
+                      onTap: () {
+                        Navigator.pop(context);
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute<void>(
+                            builder: (_) => const SeasonFormScreen(),
+                          ),
+                        );
+                      },
+                    ),
                   ],
                 ),
               ),

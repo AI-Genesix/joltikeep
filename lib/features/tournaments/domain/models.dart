@@ -249,3 +249,9 @@ Season? pickSeason(List<Season> seasons, String? selectedId, DateTime now) {
     );
   }
 }
+
+DateTime defaultSeasonStart(DateTime now) {
+  return now.isBefore(DateTime(now.year, 9, 1))
+      ? DateTime(now.year - 1, 9, 1)
+      : DateTime(now.year, 9, 1);
+}

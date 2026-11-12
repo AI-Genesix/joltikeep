@@ -1,0 +1,91 @@
+import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:joltikeep/features/tournaments/domain/models.dart';
+
+class SeasonFormScreen extends ConsumerStatefulWidget {
+  const SeasonFormScreen({super.key});
+
+  @override
+  ConsumerState<SeasonFormScreen> createState() => _SeasonFormScreenState();
+}
+
+class _SeasonFormScreenState extends ConsumerState<SeasonFormScreen> {
+  final _nameController = TextEditingController();
+
+  late DateTime _start;
+  late DateTime _end;
+
+  Future<DateTime?> _pickDate(DateTime initial) {
+    return showDatePicker(
+      context: context,
+      initialDate: initial,
+      firstDate: DateTime(2000),
+      lastDate: DateTime(2100),
+    );
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    _start = defaultSeasonStart(DateTime.now());
+    _end = DateTime(_start.year + 1, 8, 31);
+  }
+
+  @override
+  void dispose() {
+    _nameController.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(title: const Text('Nouvelle saison')),
+      body: Padding(
+        padding: const EdgeInsets.all(16),
+        child: Column(
+          children: [
+            TextField(
+              controller: _nameController,
+              decoration: const InputDecoration(labelText: 'Nom de la saison'),
+            ),
+            ListTile(
+              contentPadding: EdgeInsets.zero,
+              title: const Text('Début'),
+              subtitle: Text(
+                '${_start.day.toString().padLeft(2, '0')}/${_start.month.toString().padLeft(2, '0')}/${_start.year}',
+              ),
+              trailing: const Icon(Icons.calendar_today),
+              onTap: () async {
+                final picked = await _pickDate(_start);
+                if (picked == null || !mounted) return;
+                setState(() {
+                  _start = picked;
+                });
+              },
+            ),
+            ListTile(
+              contentPadding: EdgeInsets.zero,
+              title: const Text('Fin'),
+              subtitle: Text(
+                "${_end.day.toString().padLeft(2, '0')}/${_end.month.toString().padLeft(2, '0')}/${_end.year}",
+              ),
+              trailing: const Icon(Icons.calendar_today),
+              onTap: () async {
+                final picked = await _pickDate(_end);
+                if (picked == null || !mounted) return;
+                setState(() {
+                  _end = picked;
+                });
+              },
+            ),
+            const SizedBox(height: 24),
+            FilledButton(onPressed: _submit, child: const Text('Créer')),
+          ],
+        ),
+      ),
+    );
+  }
+
+  void _submit() {}
+}
