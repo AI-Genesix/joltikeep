@@ -255,3 +255,9 @@ DateTime defaultSeasonStart(DateTime now) {
       ? DateTime(now.year - 1, 9, 1)
       : DateTime(now.year, 9, 1);
 }
+
+String? seasonDatesErrror(DateTime start, DateTime end) {
+  return end.isBefore(start)
+      ? "La date de fin doit être ultérieure à celle de début"
+      : null;
+}

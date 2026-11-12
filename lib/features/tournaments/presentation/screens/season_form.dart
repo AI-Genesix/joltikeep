@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:joltikeep/app/theme.dart';
 import 'package:joltikeep/features/tournaments/domain/models.dart';
 import 'package:joltikeep/features/tournaments/presentation/formatters.dart';
 
@@ -40,6 +41,8 @@ class _SeasonFormScreenState extends ConsumerState<SeasonFormScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final datesError = seasonDatesErrror(_start, _end);
+
     return Scaffold(
       appBar: AppBar(title: const Text('Nouvelle saison')),
       body: Padding(
@@ -77,8 +80,17 @@ class _SeasonFormScreenState extends ConsumerState<SeasonFormScreen> {
                 });
               },
             ),
+            datesError != null
+                ? Text(
+                    datesError,
+                    style: TextStyle(fontSize: 12, color: AppColors.loss),
+                  )
+                : SizedBox(),
             const SizedBox(height: 24),
-            FilledButton(onPressed: _submit, child: const Text('Créer')),
+            FilledButton(
+              onPressed: datesError == null ? _submit : null,
+              child: const Text('Créer'),
+            ),
           ],
         ),
       ),
