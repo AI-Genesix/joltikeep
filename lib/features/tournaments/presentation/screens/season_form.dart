@@ -126,3 +126,10 @@ class _SeasonFormScreenState extends ConsumerState<SeasonFormScreen> {
     Navigator.pop(context);
   }
 }
+
+void openSeasonForm(BuildContext context) {
+  Navigator.push(
+    context,
+    MaterialPageRoute<void>(builder: (_) => const SeasonFormScreen()),
+  );
+}

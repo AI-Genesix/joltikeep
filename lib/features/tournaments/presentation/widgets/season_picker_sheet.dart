@@ -59,12 +59,7 @@ class SeasonPickerSheet extends ConsumerWidget {
                       title: const Text('Nouvelle saison'),
                       onTap: () {
                         Navigator.pop(context);
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute<void>(
-                            builder: (_) => const SeasonFormScreen(),
-                          ),
-                        );
+                        openSeasonForm(context);
                       },
                     ),
                   ],

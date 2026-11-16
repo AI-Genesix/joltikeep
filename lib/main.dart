@@ -4,6 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart'; // Gestion d'état
 import 'package:firebase_auth/firebase_auth.dart'; // Authentification
 import 'package:joltikeep/app/theme.dart';
 import 'package:joltikeep/features/tournaments/domain/models.dart';
+import 'package:joltikeep/features/tournaments/presentation/screens/season_form.dart';
 import 'package:joltikeep/features/tournaments/presentation/widgets/season_header.dart';
 import 'package:joltikeep/features/tournaments/presentation/widgets/season_picker_sheet.dart';
 import 'package:joltikeep/features/tournaments/presentation/widgets/tournament_card.dart';
@@ -65,7 +66,21 @@ class HomeScreen extends ConsumerWidget {
       body: SafeArea(
         child: season.when(
           data: (s) => s == null
-              ? const Center(child: Text('Aucune saison'))
+              ? Center(
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Text('Aucune saison'),
+                      SizedBox(height: 24),
+                      FilledButton(
+                        onPressed: () {
+                          openSeasonForm(context);
+                        },
+                        child: Text("Ajouter une saison"),
+                      ),
+                    ],
+                  ),
+                )
               : _SeasonView(season: s),
           error: (e, st) => Center(child: Text('Erreur : $e')),
           loading: () => const Center(child: CircularProgressIndicator()),
