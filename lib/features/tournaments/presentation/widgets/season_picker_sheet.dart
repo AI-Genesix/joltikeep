@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:joltikeep/app/theme.dart';
 import 'package:joltikeep/features/tournaments/presentation/formatters.dart';
 import 'package:joltikeep/features/tournaments/presentation/screens/season_form.dart';
+import 'package:joltikeep/features/tournaments/presentation/widgets/confirm_deletion.dart';
 import 'package:joltikeep/features/tournaments/providers.dart';
 
 class SeasonPickerSheet extends ConsumerWidget {
@@ -52,6 +53,19 @@ class SeasonPickerSheet extends ConsumerWidget {
                               .select(s.id);
                           Navigator.pop(context);
                         },
+                        onLongPress: () async {
+                          final ok = await confirmDelete(
+                            context,
+                            title: "Supprimer cette saison ?",
+                            message:
+                                "${s.label} et tous ses tournois seront supprimés définitivement",
+                          );
+                          if (!ok || !context.mounted) return;
+                          ref
+                              .read(tournamentRepositoryProvider)
+                              .deleteSeason(s.id);
+                          Navigator.pop(context);
+                        },
                       ),
                     ListTile(
                       contentPadding: EdgeInsets.zero,
@@ -61,6 +75,12 @@ class SeasonPickerSheet extends ConsumerWidget {
                         Navigator.pop(context);
                         openSeasonForm(context);
                       },
+                    ),
+                    const SizedBox(height: 8),
+                    Text(
+                      textAlign: TextAlign.center,
+                      'Appui long sur une saison pour la supprimer',
+                      style: TextStyle(fontSize: 12, color: AppColors.muted),
                     ),
                   ],
                 ),

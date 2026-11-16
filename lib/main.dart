@@ -8,7 +8,7 @@ import 'package:joltikeep/features/tournaments/presentation/screens/season_form.
 import 'package:joltikeep/features/tournaments/presentation/widgets/season_header.dart';
 import 'package:joltikeep/features/tournaments/presentation/widgets/season_picker_sheet.dart';
 import 'package:joltikeep/features/tournaments/presentation/widgets/tournament_card.dart';
-import 'package:joltikeep/features/tournaments/presentation/widgets/tournament_deletion.dart';
+import 'package:joltikeep/features/tournaments/presentation/widgets/confirm_deletion.dart';
 import 'package:joltikeep/features/tournaments/providers.dart';
 
 import 'firebase_options.dart'; // Identifiants projet
@@ -139,7 +139,12 @@ class _SeasonView extends ConsumerWidget {
                   TournamentCard(
                     tournament: t,
                     onLongPress: () async {
-                      final ok = await confirmDeleteTournament(context, t);
+                      final ok = await confirmDelete(
+                        context,
+                        title: "Supprimer ce tournoi ?",
+                        message:
+                            "${t.name} et ses rondes seront supprimés définitivement.",
+                      );
                       if (!ok || !context.mounted) return;
                       ref
                           .read(tournamentRepositoryProvider)

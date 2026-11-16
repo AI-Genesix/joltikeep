@@ -49,6 +49,19 @@ class TournamentRepository {
     return _seasons.doc(season.id).set(season.toMap());
   }
 
+  Future<void> deleteSeason(String seasonId) async {
+    final seasonRef = _seasons.doc(seasonId);
+    final tournaments = await seasonRef.collection('tournaments').get();
+
+    final batch = FirebaseFirestore.instance.batch();
+    for (final doc in tournaments.docs) {
+      batch.delete(doc.reference);
+    }
+    batch.delete(seasonRef);
+
+    await batch.commit();
+  }
+
   Future<void> saveTournament(String seasonId, Tournament tournament) {
     return _tournaments(seasonId).doc(tournament.id).set(tournament.toMap());
   }

@@ -1,15 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:joltikeep/app/theme.dart';
-import 'package:joltikeep/features/tournaments/domain/models.dart';
 
-Future<bool> confirmDeleteTournament(BuildContext context, Tournament t) async {
+Future<bool> confirmDelete(
+  BuildContext context, {
+  required String title,
+  required String message,
+}) async {
   final confirmed = await showDialog<bool>(
     context: context,
     builder: (context) => AlertDialog(
-      title: const Text('Supprimer ce tournoi ?'),
-      content: Text(
-        '« ${t.name} » sera supprimé définitivement, avec ses rondes.',
-      ),
+      title: Text(title),
+      content: Text(message),
       actions: [
         TextButton(
           onPressed: () => Navigator.pop(context, false),
