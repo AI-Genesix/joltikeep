@@ -53,7 +53,7 @@ class TournamentRepository {
     final seasonRef = _seasons.doc(seasonId);
     final tournaments = await seasonRef.collection('tournaments').get();
 
-    final batch = FirebaseFirestore.instance.batch();
+    final batch = _seasons.firestore.batch();
     for (final doc in tournaments.docs) {
       batch.delete(doc.reference);
     }

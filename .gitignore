@@ -63,3 +63,5 @@ firebase-debug.*.log
 .agents/
 .claude/
 skills-lock.json
+
+tools/data
