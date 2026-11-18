@@ -4,6 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart'; // Gestion d'état
 import 'package:firebase_auth/firebase_auth.dart'; // Authentification
 import 'package:joltikeep/app/theme.dart';
 import 'package:joltikeep/features/tournaments/domain/models.dart';
+import 'package:joltikeep/features/tournaments/presentation/screens/deck_picker.dart';
 import 'package:joltikeep/features/tournaments/presentation/screens/season_form.dart';
 import 'package:joltikeep/features/tournaments/presentation/widgets/season_header.dart';
 import 'package:joltikeep/features/tournaments/presentation/widgets/season_picker_sheet.dart';
@@ -117,6 +118,13 @@ class _SeasonView extends ConsumerWidget {
             );
           },
           child: const Text('Ajouter un tournoi test'),
+        ),
+        TextButton(
+          onPressed: () => Navigator.push(
+            context,
+            MaterialPageRoute<void>(builder: (_) => const DeckPickerScreen()),
+          ),
+          child: const Text('test sélection deck'),
         ),
         Expanded(
           child: tournaments.when(
