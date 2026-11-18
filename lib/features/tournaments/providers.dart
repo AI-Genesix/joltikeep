@@ -1,8 +1,10 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:joltikeep/features/tournaments/data/tournament_repository.dart';
 import 'package:joltikeep/features/tournaments/domain/models.dart';
+import 'package:joltikeep/features/tournaments/domain/pokemon.dart';
 
 final userIdProvider = Provider<String>((ref) {
   return FirebaseAuth.instance.currentUser!.uid;
@@ -46,4 +48,9 @@ final displayedSeasonProvider = Provider<AsyncValue<Season?>>((ref) {
   return seasons.whenData(
     (list) => pickSeason(list, selectedId, DateTime.now()),
   );
+});
+
+final pokedexProvider = FutureProvider<List<Pokemon>>((ref) async {
+  final raw = await rootBundle.loadString('assets/data/pokedex.json');
+  return parsePokedex(raw);
 });
