@@ -73,6 +73,10 @@ class Deck {
   }
 }
 
+String deckName(List<String> names) {
+  return names.join(" / ");
+}
+
 class Round {
   const Round({required this.opponent, required this.history});
 
