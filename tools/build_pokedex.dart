@@ -1,6 +1,8 @@
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:flutter/material.dart';
+
 List<Map<String, String>> readCSV(String path) {
   final lines = File(path).readAsLinesSync();
   final header = lines.first.split(',');
@@ -18,7 +20,7 @@ String humanize(String identifier) => identifier
 void main() {
   final languages = readCSV('tools/data/languages.csv');
   final frId = languages.firstWhere((r) => r['identifier'] == 'fr')['id']!;
-  print('Identifiant du français : $frId');
+  debugPrint('Identifiant du français : $frId');
 
   final speciesNames = {
     for (final r in readCSV('tools/data/pokemon_species_names.csv'))
@@ -77,14 +79,14 @@ void main() {
     }
   }
 
-  print(speciesNames[25]);
-  print(speciesNames[6]);
-  print('${entries.length} entrées');
-  print('Sans nom français : $fallbacks');
+  debugPrint(speciesNames[25]);
+  debugPrint(speciesNames[6]);
+  debugPrint('${entries.length} entrées');
+  debugPrint('Sans nom français : $fallbacks');
 
   const encoder = JsonEncoder.withIndent('  ');
   File('assets/data/pokedex.json')
     ..createSync(recursive: true)
     ..writeAsStringSync(encoder.convert(entries));
-  print('Fichier écrit : ${entries.length} entrées');
+  debugPrint('Fichier écrit : ${entries.length} entrées');
 }

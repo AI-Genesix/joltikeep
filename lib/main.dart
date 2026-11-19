@@ -120,11 +120,14 @@ class _SeasonView extends ConsumerWidget {
           child: const Text('Ajouter un tournoi test'),
         ),
         TextButton(
-          onPressed: () => Navigator.push(
-            context,
-            MaterialPageRoute<void>(builder: (_) => const DeckPickerScreen()),
-          ),
-          child: const Text('test sélection deck'),
+          onPressed: () async {
+            final deck = await Navigator.push<Deck>(
+              context,
+              MaterialPageRoute(builder: (_) => const DeckPickerScreen()),
+            );
+            debugPrint('Deck choisi : ${deck?.name} ${deck?.pokemonIds}}');
+          },
+          child: const Text('Test sélection deck'),
         ),
         Expanded(
           child: tournaments.when(
