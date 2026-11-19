@@ -41,46 +41,64 @@ class _DeckPickerScreenState extends ConsumerState<DeckPickerScreen> {
     final shown = filterPokedex(all, _query);
     return Column(
       children: [
-        Wrap(
-          spacing: 8,
-          children: [
-            for (final p in _selected)
-              InputChip(
-                label: Text(p.name),
-                onDeleted: () =>
-                    setState(() => _selected = toggleSelection(_selected, p)),
+        Padding(
+          padding: EdgeInsets.symmetric(vertical: 0, horizontal: 16),
+          child: Column(
+            children: [
+              Wrap(
+                spacing: 8,
+                children: [
+                  for (final p in _selected)
+                    InputChip(
+                      label: Text(p.name),
+                      onDeleted: () => setState(
+                        () => _selected = toggleSelection(_selected, p),
+                      ),
+                    ),
+                ],
               ),
-          ],
-        ),
-        TextField(
-          decoration: const InputDecoration(
-            hintText: 'Rechercher un Pokémon',
-            prefixIcon: Icon(Icons.search),
+              TextField(
+                decoration: const InputDecoration(
+                  hintText: 'Rechercher un Pokémon',
+                  prefixIcon: Icon(Icons.search),
+                ),
+                onChanged: (value) => setState(() => _query = value),
+              ),
+            ],
           ),
-          onChanged: (value) => setState(() => _query = value),
         ),
+
         Expanded(
-          child: ListView.builder(
-            itemCount: shown.length,
-            itemBuilder: (context, index) {
-              final p = shown[index];
-              final position = _selected.indexWhere((s) => s.id == p.id);
-              return ListTile(
-                title: Text(p.name),
-                selected: position != -1,
-                trailing: position == -1 ? null : Text('${position + 1}'),
-                onTap: () {
-                  if (position == -1 && _selected.length >= maxDeckPokemon) {
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      const SnackBar(content: Text('2 Pokémon maximum')),
+          child: shown.isEmpty
+              ? Center(child: Text("Aucun Pokémon trouvé"))
+              : ListView.builder(
+                  keyboardDismissBehavior:
+                      ScrollViewKeyboardDismissBehavior.onDrag,
+                  itemCount: shown.length,
+                  itemBuilder: (context, index) {
+                    final p = shown[index];
+                    final position = _selected.indexWhere((s) => s.id == p.id);
+                    return ListTile(
+                      title: Text(p.name),
+                      selected: position != -1,
+                      trailing: position == -1 ? null : Text('${position + 1}'),
+                      onTap: () {
+                        if (position == -1 &&
+                            _selected.length >= maxDeckPokemon) {
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            const SnackBar(
+                              content: Text('$maxDeckPokemon Pokémon maximum'),
+                            ),
+                          );
+                          return;
+                        }
+                        setState(
+                          () => _selected = toggleSelection(_selected, p),
+                        );
+                      },
                     );
-                    return;
-                  }
-                  setState(() => _selected = toggleSelection(_selected, p));
-                },
-              );
-            },
-          ),
+                  },
+                ),
         ),
         SafeArea(
           child: Padding(
